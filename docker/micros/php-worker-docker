@@ -1,0 +1,18 @@
+FROM ubuntu:bionic
+ENV DEBIAN_FRONTEND=noninteractive TZ=UTC
+
+RUN apt update && apt upgrade -y && apt install -y apt-utils software-properties-common curl git zip
+RUN add-apt-repository -y ppa:ondrej/php \
+    && apt install -y php7.4-sqlite php7.4-fpm php7.4-mysql php7.4-mbstring php7.4-curl php7.4-dom php7.4-apcu php7.4-redis\
+    && mkdir -p /run/php
+
+RUN sed -i 's~;opcache.enable=1~opcache.enable=1~g' /etc/php/7.4/fpm/php.ini \
+    && sed -i 's~;opcache.enable_cli=1~opcache.enable_cli=1~g' /etc/php/7.4/fpm/php.ini \
+    && sed -i 's~;realpath_cache_size~realpath_cache_size~g' /etc/php/7.4/fpm/php.ini \
+    && sed -i 's~;realpath_cache_ttl~realpath_cache_ttl~g' /etc/php/7.4/fpm/php.ini \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN curl https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh > /usr/local/bin/wait-for-it \
+    && chmod 755 /usr/local/bin/wait-for-it
+
+WORKDIR /var/www/html/

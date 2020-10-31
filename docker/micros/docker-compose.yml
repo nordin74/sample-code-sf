@@ -1,0 +1,78 @@
+version: '3'
+
+services:
+  database:
+    image: mysql:5.7.30
+    networks:
+      - samynet
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=samy
+    ports:
+      - '3306:3306'
+#    volumes:
+#      - ./mysql:/var/lib/mysql
+
+  queue:
+    image: redis:alpine
+#    command: ["redis-server", "--appendonly", "second"]
+    networks:
+      - samynet
+    ports:
+      - '6379:6379'
+
+  balancer:
+    hostname: balancer
+    depends_on:
+      - php-worker
+    build:
+      context: .
+      dockerfile: balancer-docker
+    networks:
+      - samynet
+    ports:
+      - '80:80'
+
+  php-nginx:
+    build:
+      context: .
+      dockerfile: php-nginx-docker
+    depends_on:
+      - database
+      - queue
+    networks:
+      - samynet
+    hostname: php-nginx
+    deploy:
+      mode: replicated
+      replicas: 3
+    volumes:
+      - ./../../:/var/www/html
+      - /var/www/html/var
+    environment:
+      - PHP_IDE_CONFIG=serverName=php-worker
+
+  php-worker:
+    build:
+      context: .
+      dockerfile: php-worker-docker
+    depends_on:
+      - php-nginx
+    networks:
+      - samynet
+    hostname: php-worker
+    deploy:
+      mode: replicated
+      replicas: 2
+    volumes:
+      - ./../../:/var/www/html
+      - /var/www/html/var
+    environment:
+      - PHP_IDE_CONFIG=serverName=php-worker
+    command: >
+      sh -c "wait-for-it -t 30 php-nginx:80 &&
+             composer install -o &&
+             chmod 777 -R /var/www/html/var &&
+             bin/backgroundProcess"
+networks:
+  samynet:

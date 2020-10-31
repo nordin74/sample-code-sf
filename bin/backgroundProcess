@@ -1,0 +1,42 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/../config/bootstrap.php';
+
+use App\Kernel;
+use App\Service\MOService;
+use App\Service\Processor\QueueProcessor;
+use App\Service\Queue\QueueInterface;
+use Symfony\Component\Console\Output\ConsoleOutput;
+
+
+$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
+$kernel->boot();
+$container = $kernel->getContainer();
+
+/** @var QueueInterface $queue */
+$queue = $container->get('queue_interface');
+$logger = $container->get('logger');
+/** @var PDO $pdo */
+$pdo = $container->get('doctrine')->getConnection()->getWrappedConnection();
+$output = new ConsoleOutput();
+
+$registration = new QueueProcessor($pdo, new MOService(), $queue);
+while (true) {
+    $sleepTime = 3;
+    try {
+        $processedRequests = $registration(1000);
+        if ($processedRequests > 0) {
+            $sleepTime = 2;
+        }
+    } catch (\Exception $exception) {
+        $output->writeln($exception->getMessage());
+        $logger->critical($exception->getMessage());
+        //TODO: Send msgs alert
+    }
+
+    if (file_exists(__DIR__ . '/.print')) {
+        $output->writeln("Running ($processedRequests requests processed)");
+    }
+    sleep($sleepTime);
+}

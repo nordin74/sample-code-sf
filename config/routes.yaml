@@ -1,0 +1,9 @@
+subscribe:
+  path: /subscribe
+  controller: App\Controller\SubscriptionsController::create
+  methods: POST
+
+stats:
+  path: /stats
+  controller: App\Controller\SubscriptionsController::statistics
+  methods: GET

@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  database:
+    image: mysql:5.7.30
+    networks:
+      - samynet
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=samy
+    ports:
+      - '3306:3306'
+#    volumes:
+#      - ./mysql:/var/lib/mysql
+
+  queue:
+    image: redis:alpine
+#    command: ["redis-server", "--appendonly", "second"]
+    networks:
+      - samynet
+    ports:
+      - '6379:6379'
+
+  php-nginx:
+    build: .
+#    image: nordin74/samy:latest
+    depends_on:
+      - database
+      - queue
+    networks:
+      - samynet
+    hostname: php-nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./../../:/var/www/html
+    environment:
+      - PHP_IDE_CONFIG=serverName=samy
+
+networks:
+  samynet:

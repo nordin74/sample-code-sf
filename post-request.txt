@@ -1,0 +1,1 @@
+{"msisdn":742788, "operatorid":3, "text":"ON LEARNING"}
