@@ -14,7 +14,8 @@ class ProblemNormalizer extends DefaultProblemNormalizer
         $data = [
             'title' => $exception->getStatusText(),
             'status' => $exception->getStatusCode(),
-            'detail' => $exception->getMessage()
+            'detail' => $exception->getStatusCode() >= 500 && !$debug ? 'Unknown error' :
+                $exception->getMessage()
         ];
 
         if ($debug) {
