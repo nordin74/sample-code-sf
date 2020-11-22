@@ -3,7 +3,7 @@
 namespace App\Validator;
 
 
-final class SubscribeRequestValidator implements SimpleValidator
+final class SubscriptionValidator implements SimpleValidatorInterface
 {
     private array $args;
 

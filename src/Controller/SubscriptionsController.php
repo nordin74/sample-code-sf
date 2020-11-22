@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Event\EnqueueEvent;
 use App\Repository\MORepository;
-use App\Validator\SubscribeRequestValidator;
+use App\Validator\SubscriptionValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +22,7 @@ class SubscriptionsController extends AbstractController
 
     public function create(
         Request $request,
-        SubscribeRequestValidator $validator,
+        SubscriptionValidator $validator,
         EventDispatcherInterface $eventDispatcher
     )
     {
