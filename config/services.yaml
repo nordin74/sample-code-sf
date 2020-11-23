@@ -40,6 +40,13 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.request }
 
+    App\EventListener\CORSListener:
+#       TODO: Set args to environment vars
+        arguments: [['http://localhost:8080'], ['GET', 'POST', 'OPTIONS']]
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
+            - { name: kernel.event_listener, event: kernel.response }
+
     logger:
         class: Symfony\Component\HttpKernel\Log\Logger
         arguments: [ notice, '%kernel.logs_dir%/%kernel.environment%.log' ]

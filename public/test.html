@@ -1,1 +1,65 @@
-WORKING
+<html lang="en">
+<head>
+  <title>It's working?</title>
+  <style>
+    div {
+      padding: 10px;
+    }
+  </style>
+</head>
+<script>
+  const baseUrlApi = 'http://127.0.0.1';
+
+  function postSubscription() {
+    let url = baseUrlApi + '/subscribe?XDEBUG_SESSION_START=PHPSTORM';
+    let body = JSON.stringify({ "msisdn": 11111, "operatorid": 3, "text": "ON LEARNING" });
+    fetch(url, { method: 'POST', body: body, headers: { 'Content-type': 'application/json;charset=UTF-8' } })
+    .then(response => response.json())
+    .then(data => console.log(data));
+  }
+
+  function getStats() {
+    let url = baseUrlApi + '/stats?XDEBUG_SESSION_START=PHPSTORM';
+    fetch(url, {  method: 'GET', headers: { 'Content-type': 'application/json;charset=UTF-8' } })
+    .then(response => response.json())
+    .then(data => console.log(data));
+  }
+
+
+  function fetchJson() {
+    let url = baseUrlApi + '/post-request.json';
+    fetch(url, {  method: 'GET', headers: { 'Content-type': 'application/json;charset=UTF-8' } })
+    .then(response => response.json())
+    .then(data => console.log(data));
+  }
+
+
+  function fetchJsonNotAllowed() {
+    let url = baseUrlApi + '/post-request-not-allowed.json';
+    fetch(url, {  method: 'GET', headers: { 'Content-type': 'application/json;charset=UTF-8' } })
+    .then(response => response.json())
+    .then(data => console.log(data));
+  }
+
+</script>
+
+WORKING. This page should run as: http://localhost:8080/test.html to test CORS
+
+<div>
+  <button onclick="getStats()">Stats</button>
+</div>
+<div>
+  <button onclick="postSubscription()">PostSubscription</button>
+</div>
+
+<div>
+  <button onclick="fetchJson()">Allowed-in-Nginx</button>
+  <span>TODO: Implementation in Nginx needed</span>
+</div>
+
+<div>
+  <button onclick="fetchJsonNotAllowed()">Not-Allowed</button>
+</div>
+
+</html>
+
