@@ -71,7 +71,7 @@ services:
       - PHP_IDE_CONFIG=serverName=php-worker
     command: >
       sh -c "wait-for-it -t 30 php-nginx:80 &&
-             composer install -o &&
+             composer install --no-plugins --no-scripts -o &&
              chmod 777 -R /var/www/html/var &&
              bin/backgroundProcess"
 networks:

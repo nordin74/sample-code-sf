@@ -3,7 +3,7 @@
 curl https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh > /usr/local/bin/wait-for-it
 chmod 755 /usr/local/bin/wait-for-it
 
-cd /var/www/html/ && ln -sf ../docker/micros/cache.yaml config/packages && composer install -o
+cd /var/www/html/ && ln -sf ../docker/micros/cache.yaml config/packages && composer install --no-plugins --no-scripts -o
 bin/console cache:warmup
 chmod 777 -R /var/www/html/var
 

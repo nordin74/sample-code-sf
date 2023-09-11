@@ -1,9 +1,9 @@
-FROM ubuntu:bionic
+FROM ubuntu:focal
 ENV DEBIAN_FRONTEND=noninteractive TZ=UTC
 
 RUN apt update && apt upgrade -y && apt install -y apt-utils software-properties-common curl git zip
 RUN add-apt-repository -y ppa:ondrej/php \
-    && apt install -y php7.4-sqlite php7.4-fpm php7.4-mysql php7.4-mbstring php7.4-curl php7.4-dom php7.4-apcu php7.4-redis\
+    && apt install -y php7.4-sqlite3 php7.4-fpm php7.4-mysql php7.4-mbstring php7.4-curl php7.4-dom php7.4-apcu php7.4-redis\
     && mkdir -p /run/php
 
 RUN sed -i 's~;opcache.enable=1~opcache.enable=1~g' /etc/php/7.4/fpm/php.ini \

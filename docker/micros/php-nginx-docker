@@ -1,9 +1,9 @@
-FROM ubuntu:bionic
+FROM ubuntu:focal
 ENV DEBIAN_FRONTEND=noninteractive TZ=UTC
 
 RUN apt update && apt upgrade -y && apt install -y apt-utils software-properties-common curl git zip nginx
 RUN add-apt-repository -y ppa:ondrej/php \
-    && apt install -y php7.4-sqlite php7.4-fpm php7.4-mysql php7.4-mbstring php7.4-curl php7.4-dom php7.4-apcu php7.4-redis\
+    && apt install -y php7.4-sqlite3 php7.4-fpm php7.4-mysql php7.4-mbstring php7.4-curl php7.4-dom php7.4-apcu php7.4-redis\
     && mkdir -p /run/php
 
 RUN sed -i 's~;opcache.enable=1~opcache.enable=1~g' /etc/php/7.4/fpm/php.ini \
@@ -19,7 +19,7 @@ RUN sed -i 's~root /var/www/html~root /var/www/html/public~g' /etc/nginx/sites-a
     && sed -i 's~try_files $uri $uri/ =404;~try_files $uri /index.php$is_args$args;~g' /etc/nginx/sites-available/default \
     && sed -i 's/#location \~ \\.php/location ~ \\.php/g' /etc/nginx/sites-available/default \
     && sed -i 's~#\tinclude snippets/fastcgi-php.conf;~\tinclude snippets/fastcgi-php.conf;~g' /etc/nginx/sites-available/default \
-    && sed -i 's~#\tfastcgi_pass unix:/var/run/php/php7.0~\tfastcgi_pass unix:/var/run/php/php7.4~g' /etc/nginx/sites-available/default \
+    && sed -i 's~#\tfastcgi_pass unix:/var/run/php/php7.4~\tfastcgi_pass unix:/var/run/php/php7.4~g' /etc/nginx/sites-available/default \
     && sed -zi 's~9000;\n\t#}~9000;\n\t}~g' /etc/nginx/sites-available/default
 
 ADD start.sh /
