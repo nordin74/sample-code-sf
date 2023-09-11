@@ -43,7 +43,7 @@ final class Version20201025230305 extends AbstractMigration
         $table->addColumn('operatorid', Types::SMALLINT);
         $table->addColumn('text', Types::STRING, ['length' => 15]);
         $table->addColumn('auth_token', Types::STRING, ['length' => 60, 'notnull' => false]);
-        $table->addColumn('node', Types::STRING, ['node' => 45]);
+        $table->addColumn('node', Types::STRING, ['length' => 45]);
         $table->addColumn('created_at', Types::DATETIME_IMMUTABLE);
         $table->setPrimaryKey(['id']);
     }

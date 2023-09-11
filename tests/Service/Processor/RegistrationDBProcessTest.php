@@ -20,7 +20,7 @@ class RegistrationDBProcessTest extends WebTestCase
         /** @var EntityManager $entityManager */
         $entityManager = static::$container->get('doctrine.orm.entity_manager');
         /** @var \PDO $pdo */
-        $pdo = $entityManager->getConnection()->getWrappedConnection();
+        $pdo = $entityManager->getConnection()->getNativeConnection();
         $moRepository = $entityManager->getRepository(MO::class);
 
 

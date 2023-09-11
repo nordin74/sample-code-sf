@@ -28,7 +28,7 @@ To be able to reach such performance and prepare the application for scaling:
 
 The main job is made by a process worker(bin/backgroundProcess)
 
-Recently the application has increasing its demands so had to evolved from Monolithic to Microservices, keeping the same application code(just change config files) and gaining: 
+Recently the application has increasing its demands so had to evolved from Monolithic to SOA, keeping the same application code(just change config files) and gaining: 
 - High Availability(No Single point of failure.)
 - High Performance incremented, as more PHP-Nodes can be added.
 
@@ -44,7 +44,7 @@ You could run the application in 2 modes:
 ### MONOLITHIC OPTION
 * `docker-compose -f docker/mono/docker-compose.yml up`
 
-### MICROSERVICES OPTION
+### SERVICES OPTION
 * `docker-compose -f docker/micros/docker-compose.yml --compatibility up`
 
 
@@ -60,6 +60,7 @@ You can find `post-request.txt` file inside the root directory.
 `curl -H "Content-Type: application/json" http://localhost/stats`
 
 ### Execute Test:
+Inside the php container execute
 `bin/console --env test doctrine:migrations:migrate -vv --no-interaction && bin/phpunit`
 
 ### Available Commands:
@@ -78,7 +79,7 @@ I try to show a minimal part of what I've learned/applied during my career, so y
     - Organization of classes and components
     - Use SOLID principles. Through all the code.
     - Independent services. Ex: you can easily change the cache driver(from apcu to redis), without touching the code
-- Hardening Servers, System Design, move smoothly from Monolithic to Microservices
+- Hardening Servers, System Design, move smoothly from Monolithic to Services
 - High performance/availability (benchmarks for checking the performance & Docker to scale out the application)
 - Testing, I did functional & unit tests. No code without test :) 
 - ...

@@ -17,8 +17,8 @@ $container = $kernel->getContainer();
 /** @var QueueInterface $queue */
 $queue = $container->get('queue_interface');
 $logger = $container->get('logger');
-/** @var PDO $pdo */
-$pdo = $container->get('doctrine')->getConnection()->getWrappedConnection();
+
+$pdo = $container->get('doctrine')->getConnection()->getNativeConnection();
 $output = new ConsoleOutput();
 
 $registration = new QueueProcessor($pdo, new MOService(), $queue);

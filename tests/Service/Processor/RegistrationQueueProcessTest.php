@@ -20,7 +20,7 @@ class RegistrationQueueProcessTest extends WebTestCase
         $queue = static::$container->get('queue_interface');
         $entityManager = static::$container->get('doctrine.orm.entity_manager');
         /** @var \PDO $pdo */
-        $pdo = $entityManager->getConnection()->getWrappedConnection();
+        $pdo = $entityManager->getConnection()->getNativeConnection();
 
 
         $requests = $this->getRequests();
@@ -45,7 +45,7 @@ class RegistrationQueueProcessTest extends WebTestCase
     {
         $entityManager = static::$container->get('doctrine.orm.entity_manager');
         /** @var \PDO $pdo */
-        $pdo = $entityManager->getConnection()->getWrappedConnection();
+        $pdo = $entityManager->getConnection()->getNativeConnection();
 
 
         $requests = $this->getRequests();
